@@ -1,32 +1,45 @@
 package com.mmcoe.auction;
 
-public class Auction {
-	Player[] players = new Player[5];
-    int count = 0;
+import java.util.LinkedList;
 
-    void addPlayer(Player p) {
-        players[count] = p;
-        count++;
+public class Auction {
+
+    private LinkedList<Team> teams;
+
+    public Auction() {
+        teams = new LinkedList<Team>();
     }
 
-    void printBid(String playerName) {
-        for (int i = 0; i < count; i++) {
-            if (players[i].name.equals(playerName)) {
-                System.out.println("Player : " + players[i].name);
-                System.out.println("Bid Amount : " + players[i].bid);
+    public void addTeam(Team t) {
+        teams.add(t);
+    }
+
+    public void displayTeams() {
+
+        for(Team t : teams) {
+            System.out.println(t.getTeamName());
+        }
+    }
+
+    public void displayTeamPlayers(String teamName) {
+
+        for(Team t : teams) {
+
+            if(t.getTeamName().equalsIgnoreCase(teamName)) {
+                t.displayPlayers();
                 return;
             }
         }
-        System.out.println("Player not found");
+
+        System.out.println("Team not found");
     }
 
-    void printTeamPlayers(String teamName) {
-        System.out.println("Team : " + teamName);
-
-        for (int i = 0; i < count; i++) {
-            if (players[i].team.equals(teamName)) {
-                System.out.println(players[i].name + " - " + players[i].bid);
+    public void showPlayerBid(String playerName) {
+        for (Team t : teams) {
+            if (t.searchPlayer(playerName)) {
+                return;      
             }
         }
+        System.out.println("Player not found");
     }
 }

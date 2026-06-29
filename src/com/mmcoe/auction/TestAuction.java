@@ -1,20 +1,30 @@
 package com.mmcoe.auction;
 
 public class TestAuction {
-	public static void main(String[] args) {
 
-        Auction a = new Auction();
+    public static void main(String[] args) {
 
-        a.addPlayer(new Player("Virat", "RCB", 150));
-        a.addPlayer(new Player("Rajat", "RCB", 80));
-        a.addPlayer(new Player("Rohit", "MI", 160));
-        a.addPlayer(new Player("Bumrah", "MI", 120));
-        a.addPlayer(new Player("Dhoni", "CSK", 120));
+        Auction auction = new Auction();
 
-        a.printBid("Virat");
+        Team rcb = new Team(1, "RCB");
+        Team mi = new Team(2, "MI");
 
-        System.out.println();
+        rcb.addPlayer(new Player("Virat", "Batsman", 210, "RCB"));
+        rcb.addPlayer(new Player("Phil Salt", "WK", 115, "RCB"));
 
-        a.printTeamPlayers("MI");
+        mi.addPlayer(new Player("Rohit", "Batsman", 160, "MI"));
+        mi.addPlayer(new Player("Bumrah", "Bowler", 180, "MI"));
+
+        auction.addTeam(rcb);
+        auction.addTeam(mi);
+
+        System.out.println("Teams:");
+        auction.displayTeams();
+
+        System.out.println("\nRCB Players:");
+        auction.displayTeamPlayers("RCB");
+
+        System.out.println("\nSearching Virat:");
+        auction.showPlayerBid("Virat");
     }
 }
