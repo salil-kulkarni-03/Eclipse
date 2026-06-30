@@ -11,7 +11,11 @@ public class Team {
     public Team(int teamId, String teamName) {
         this.teamId = teamId;
         this.teamName = teamName;
-        players = new LinkedList<Player>();
+        players = new LinkedList<>();
+    }
+
+    public int getTeamId() {
+        return teamId;
     }
 
     public String getTeamName() {
@@ -24,30 +28,42 @@ public class Team {
 
     public void displayPlayers() {
 
-        System.out.println("Team : " + teamName);
-
-        for(Player p : players) {
-            p.display();
-            System.out.println();
-        }
+        System.out.println("\nTeam : " + teamName);
+        players.forEach(Player::display);
     }
 
     public boolean searchPlayer(String name) {
 
-        for (Player p : players) {
-            if (p.getName().equalsIgnoreCase(name)) {
-                p.display();
-                return true;
-            }
-        }
+        return players.stream()
+                .filter(p -> p.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .map(p -> {
+                    p.display();
+                    return true;
+                })
+                .orElse(false);
+    }
 
-        return false;
+    public void displayPlayersByRole(String role) {
+
+        System.out.println("\n" + role + "s in " + teamName + ":");
+
+        players.stream()
+                .filter(p -> p.getRole().equalsIgnoreCase(role))
+                .forEach(Player::display);
     }
 
     public void showBids() {
 
-        for(Player p : players) {
-            System.out.println(p.getName() + " : " + p.getBid());
-        }
+        System.out.println("\nBids of " + teamName + ":");
+
+        players.forEach(p ->
+                System.out.println(p.getName() + " : " + p.getBid()));
+    }
+
+    public boolean hasRole(String role) {
+
+        return players.stream()
+                .anyMatch(p -> p.getRole().equalsIgnoreCase(role));
     }
 }

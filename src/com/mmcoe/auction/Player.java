@@ -18,6 +18,10 @@ public class Player {
         return name;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     public int getBid() {
         return bid;
     }
@@ -31,5 +35,11 @@ public class Player {
         System.out.println("Role : " + role);
         System.out.println("Bid : " + bid);
         System.out.println("Team : " + teamName);
+    }
+
+    @Override
+    public String toString() {
+        return "Player [Name=" + name + ", Role=" + role +
+               ", Bid=" + bid + ", Team=" + teamName + "]";
     }
 }

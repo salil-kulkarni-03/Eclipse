@@ -1,30 +1,48 @@
 package com.mmcoe.auction;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class TestAuction {
 
     public static void main(String[] args) {
 
         Auction auction = new Auction();
 
-        Team rcb = new Team(1, "RCB");
-        Team mi = new Team(2, "MI");
+        try {
 
-        rcb.addPlayer(new Player("Virat", "Batsman", 210, "RCB"));
-        rcb.addPlayer(new Player("Phil Salt", "WK", 115, "RCB"));
+            Files.lines(Paths.get("src/players.txt"))
+                    .forEach(line -> {
 
-        mi.addPlayer(new Player("Rohit", "Batsman", 160, "MI"));
-        mi.addPlayer(new Player("Bumrah", "Bowler", 180, "MI"));
+                        String[] data = line.split(",");
 
-        auction.addTeam(rcb);
-        auction.addTeam(mi);
+                        Player player = new Player(
+                                data[0],
+                                data[1],
+                                Integer.parseInt(data[2]),
+                                data[3]);
 
-        System.out.println("Teams:");
-        auction.displayTeams();
+                        auction.addPlayer(player);
 
-        System.out.println("\nRCB Players:");
-        auction.displayTeamPlayers("RCB");
+                    });
 
-        System.out.println("\nSearching Virat:");
-        auction.showPlayerBid("Virat");
+            System.out.println("========== TEAMS ==========");
+            auction.displayTeams();
+
+            System.out.println("\n========== RCB PLAYERS ==========");
+            auction.displayTeamPlayers("RCB");
+
+            System.out.println("\n========== SEARCH PLAYER ==========");
+            auction.showPlayerBid("Virat Kohli");
+
+            System.out.println("\n========== BOWLERS ==========");
+            auction.displayPlayersByRole("Bowler");
+
+        }
+        catch(IOException e) {
+            System.out.println("Error : " + e.getMessage());
+        }
+
     }
 }

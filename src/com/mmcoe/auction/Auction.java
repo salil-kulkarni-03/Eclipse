@@ -7,39 +7,53 @@ public class Auction {
     private LinkedList<Team> teams;
 
     public Auction() {
-        teams = new LinkedList<Team>();
+        teams = new LinkedList<>();
     }
 
-    public void addTeam(Team t) {
-        teams.add(t);
+    public void addPlayer(Player player) {
+
+        Team team = teams.stream()
+                .filter(t -> t.getTeamName().equalsIgnoreCase(player.getTeamName()))
+                .findFirst()
+                .orElse(null);
+
+        if (team == null) {
+            team = new Team(teams.size() + 1, player.getTeamName());
+            teams.add(team);
+        }
+
+        team.addPlayer(player);
     }
 
     public void displayTeams() {
-
-        for(Team t : teams) {
-            System.out.println(t.getTeamName());
-        }
+        teams.forEach(t -> System.out.println(t.getTeamName()));
     }
 
     public void displayTeamPlayers(String teamName) {
 
-        for(Team t : teams) {
-
-            if(t.getTeamName().equalsIgnoreCase(teamName)) {
-                t.displayPlayers();
-                return;
-            }
-        }
-
-        System.out.println("Team not found");
+        teams.stream()
+                .filter(t -> t.getTeamName().equalsIgnoreCase(teamName))
+                .findFirst()
+                .ifPresentOrElse(
+                        Team::displayPlayers,
+                        () -> System.out.println("Team not found")
+                );
     }
 
     public void showPlayerBid(String playerName) {
+
         for (Team t : teams) {
-            if (t.searchPlayer(playerName)) {
-                return;      
-            }
+            if (t.searchPlayer(playerName))
+                return;
         }
+
         System.out.println("Player not found");
+    }
+
+    public void displayPlayersByRole(String role) {
+
+        teams.stream()
+                .filter(t -> t.hasRole(role))
+                .forEach(t -> t.displayPlayersByRole(role));
     }
 }
